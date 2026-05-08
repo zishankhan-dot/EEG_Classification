@@ -4,3 +4,7 @@ matplotlib
 numpy
 os
 tempfile
+glob
+scikit-learn
+seaborn
+scipy
