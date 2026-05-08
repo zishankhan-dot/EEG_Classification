@@ -1,1 +1,6 @@
 mne
+streamlit
+matplotlib
+numpy
+os
+tempfile
