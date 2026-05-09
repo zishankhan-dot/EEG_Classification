@@ -17,7 +17,7 @@ def dataPrep(path_of_raw_datas):  #../data/raw/ in my case
     event_id=dict(left=1,right=2)
     
     #channels 
-    Channels=["C1","C2","Cz"]
+    Channels=["C3","C4","Cz"]
     
     for s in subjects:
         #find all the eeg subject with .edf extension
@@ -37,8 +37,8 @@ def dataPrep(path_of_raw_datas):  #../data/raw/ in my case
             raw_filter,
             event,
             event_id_full,
-            tmin=0.0,
-            tmax=4.0,
+            tmin=0.8,
+            tmax=3.5,
             baseline=None, 
             preload=True
         )

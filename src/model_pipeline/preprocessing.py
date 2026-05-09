@@ -9,8 +9,8 @@ def renameChannels(raw_combined):
     return raw_combined
 
 def bandFilter(raw_combined):
-    raw_filter=raw_combined.filter(8.,30.,fir_design='firwin', skip_by_annotation='edge')
-    
+    #raw_filter=raw_combined.filter(8.,30.,fir_design='firwin', skip_by_annotation='edge')
+    raw_filter=raw_combined
     return raw_filter
 
 
