@@ -113,6 +113,9 @@ st.graphviz_chart("""
 st.divider()
 st.subheader("Model Inference")
 
+if not run_btn:
+    st.warning("Select a model and click Run Prediction from the left sidebar to run inference.")
+
 with st.sidebar:
     st.divider()
     st.subheader("Model")
