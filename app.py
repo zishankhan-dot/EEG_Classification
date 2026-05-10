@@ -113,14 +113,14 @@ st.graphviz_chart("""
 st.divider()
 st.subheader("Model Inference")
 
-if not run_btn:
-    st.warning("Select a model and click Run Prediction from the left sidebar to run inference.")
-
 with st.sidebar:
     st.divider()
     st.subheader("Model")
     model_name = st.selectbox("Select Model", ["LDA", "SVM", "RF", "MLP"])
     run_btn    = st.button("Run Prediction", use_container_width=True)
+
+if not run_btn:
+    st.warning("Select a model and click Run Prediction from the left sidebar to run inference.")
 
 if run_btn:
     with st.spinner("Running pipeline..."):
