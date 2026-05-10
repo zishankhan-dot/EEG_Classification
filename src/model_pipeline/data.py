@@ -4,58 +4,56 @@ from glob import glob
 import numpy as np
 from src.model_pipeline.preprocessing import renameChannels, bandFilter
 
-def dataPrep(path_of_raw_datas):  #../data/raw/ in my case 
-   
-    # 1-20 subjects (4,8,12)- Runs each subject
-    subjects=range(1,21)
+def dataPrep(path_of_raw_datas=None, raw=None, from_file=True):
 
-    #X-> X-data (containing channels,signals)
-    #Y-> Y-data (annotations (T1,T2))
-    #groups -> subject matching each x,y rows 
-    x_all,y_all,groups=[],[],[]
+    Channels = ["C3", "C4", "Cz"]
 
-    event_id=dict(left=1,right=2)
-    
-    #channels 
-    Channels=["C3","C4","Cz"]
-    
-    for s in subjects:
-        #find all the eeg subject with .edf extension
-        files=glob(os.path.join(path_of_raw_datas, f"S{s:03d}*.edf"))
-        raw_file=[mne.io.read_raw_edf(i, preload=True)   for i in files]
-        raw_concat=(mne.concatenate_raws(raw_file))
-        #channels renamed C1. -> C1
-        raw_concat=renameChannels(raw_concat)
-        #filtered data from 8-30hz
-        raw_filter=bandFilter(raw_concat)
-        raw_filter.pick(Channels)
-        
-        #Annotation for T1,T2 -drop T0 
-        event,event_id_full=mne.events_from_annotations(raw_filter,event_id=dict(T1=2,T2=3))
-        #epoch for this subject with T1,T2 and 4 sec window
-        epochs=mne.Epochs(
-            raw_filter,
-            event,
-            event_id_full,
-            tmin=0.8,
-            tmax=3.5,
-            baseline=None, 
-            preload=True
+    if from_file:
+        subjects = [1, 2, 4, 7, 9, 13, 17, 29, 33, 34, 42, 47, 48, 49, 54, 55, 59, 60, 62, 69, 70, 72, 76, 83, 85]
+        x_all, y_all, groups = [], [], []
+
+        for s in subjects:
+            files = glob(os.path.join(path_of_raw_datas, f"S{s:03d}*.edf"))
+            raw_file = [mne.io.read_raw_edf(i, preload=True) for i in files]
+            raw_concat = mne.concatenate_raws(raw_file)
+            raw_concat = renameChannels(raw_concat)
+            if raw_concat.info['sfreq'] != 160:
+                raw_concat.resample(160, verbose=False)
+            raw_filter = bandFilter(raw_concat)
+            raw_filter.pick(Channels)
+
+            event, event_id_full = mne.events_from_annotations(raw_filter, event_id=dict(T1=2, T2=3))
+            epochs = mne.Epochs(
+                raw_filter, event, event_id_full,
+                tmin=0, tmax=4, baseline=None, preload=True, verbose=False
+            )
+            x_all.append(epochs.get_data())
+            y_all.append(epochs.events[:, -1])
+            groups.append(np.full(len(epochs), s))
+
+        X      = np.concatenate(x_all)
+        Y      = np.concatenate(y_all)
+        Groups = np.concatenate(groups)
+
+    else:
+        raw_f = raw.copy()
+        raw_f = renameChannels(raw_f)
+        if raw_f.info['sfreq'] != 160:
+            raw_f.resample(160, verbose=False)
+        raw_f = bandFilter(raw_f)
+        raw_f.pick(Channels)
+
+        event, event_id_full = mne.events_from_annotations(raw_f, event_id=dict(T1=2, T2=3), verbose=False)
+        epochs = mne.Epochs(
+            raw_f, event, event_id_full,
+            tmin=0, tmax=4, baseline=None, preload=True, verbose=False
         )
-        x_all.append(epochs.get_data())
-        y_all.append(epochs.events[:,-1]) #where t1,t2 is stored
-        groups.append(np.full(len(epochs),s))
 
-    X=np.concatenate(x_all)
-    Y=np.concatenate(y_all)
-    Groups=np.concatenate(groups)
+        X      = epochs.get_data()
+        Y      = epochs.events[:, -1]
+        Groups = np.zeros(len(epochs), dtype=int)
 
-
-    return X,Y,Groups
-
-#raw_combined=dataPrep("../../data/raw/")
-#duration_secs = raw_combined.n_times / raw_combined.info['sfreq']
-#print(raw_combined.times[-1]) ##duration matches which proves concat works
+    return X, Y, Groups
 
 
 

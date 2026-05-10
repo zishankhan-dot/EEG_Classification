@@ -9,12 +9,11 @@ def renameChannels(raw_combined):
     return raw_combined
 
 def bandFilter(raw_combined):
-    #raw_filter=raw_combined.filter(8.,30.,fir_design='firwin', skip_by_annotation='edge')
-    raw_filter=raw_combined
+    raw_filter = raw_combined.filter(8., 30., fir_design='firwin', verbose=False)
     return raw_filter
 
 
-def featureExtraction(X,relative,s_freq=160,bands={'mu':(8,13),'beta':(13,30)}):
+def featureExtraction(X,relative=False,s_freq=160,bands={'mu':(8,13),'beta':(13,30)}):
     n_trails,channels,_=X.shape
     features=[] #3 channels * 2 target(t1,t2) => 6 bands 2(alpha and beta) for each channels
 

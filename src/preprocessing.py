@@ -22,7 +22,7 @@ def load_raw(uploaded_file):
 
 def get_filteredBoth(raw):
     # using alpha (8-13) and beta(13-30) bands
-    raw_filtered=raw.filter(8.0,30.0)
+    raw_filtered=raw.copy().filter(8.0,30.0)
     return raw_filtered;
 
 def get_fileteredBeta(raw):

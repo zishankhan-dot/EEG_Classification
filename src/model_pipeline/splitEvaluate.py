@@ -33,9 +33,9 @@ def SplitData(x,y,groups):
                 "y_true": y_test, 
                 "y_pred": y_pred  
             })
-
+            print(f"Subject {test_subject} | Acc: {acc:.3f} | F1: {f1:.3f}")
     
-        print(f"Subject {test_subject} | Acc: {acc:.3f} | F1: {f1:.3f}")
+        
     
     return pd.DataFrame(results)
 
