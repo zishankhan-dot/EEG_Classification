@@ -1,4 +1,5 @@
 import mne
+from mne.datasets import eegbci
 import tempfile, os
 
 #function to take uploaded file (browser memory)
@@ -18,6 +19,15 @@ def load_raw(uploaded_file):
     Channel_names={ch:ch.replace(".","") for ch in raw.ch_names}
     raw.rename_channels(Channel_names)
 
+    return raw
+
+def load_demo(subject=29, run=4):
+    data_path = os.path.join(tempfile.gettempdir(), 'mne_data')
+    os.makedirs(data_path, exist_ok=True)
+    paths = eegbci.load_data(subject, runs=[run], path=data_path, update_path=False, verbose=False)
+    raw = mne.io.read_raw_edf(paths[0], preload=True, verbose=False)
+    Channel_names = {ch: ch.replace(".", "") for ch in raw.ch_names}
+    raw.rename_channels(Channel_names)
     return raw
 
 def get_filteredBoth(raw):
