@@ -30,7 +30,7 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://eegclassification-e23zmab6w2ai9ocfcsbtv7.streamlit.app/)
 
-<video src="assests/streamlit-app-2026-05-10-09-55-12.webm" controls width="100%"></video>
+![App Demo](assests/streamlit-app-2026-05-10-09-55-12-ezgif.com-video-to-gif-converter.gif)
 
 The app lets you upload any PhysioNet EDF file (runs 4, 8, or 12) or load a built-in demo subject (S029 R04) to visualize signals and run model inference.
 
