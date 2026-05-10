@@ -2,11 +2,6 @@
 
 > Classifying imagined left vs right hand movement from EEG signals using the PhysioNet dataset — with a live Streamlit demo app.
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![MNE](https://img.shields.io/badge/MNE-1.12-green)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
-
 ---
 
 ## Table of Contents
