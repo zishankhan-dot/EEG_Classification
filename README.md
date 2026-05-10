@@ -1,6 +1,6 @@
 # EEG Motor Imagery Classifier
 
-> Classifying imagined left vs right hand movement from EEG signals using the PhysioNet dataset — with a live Streamlit demo app.
+> Classifying imagined left vs right hand movement from EEG signals using the PhysioNet dataset - with a live Streamlit  app.
 
 ---
 
